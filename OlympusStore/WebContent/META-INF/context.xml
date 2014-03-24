@@ -1,0 +1,17 @@
+<Context cachingAllowed="false">
+	<Resource name="jdbc/resBookdatabase"
+		auth="Container"
+		type="javax.sql.DataSource"
+		driverClassName="oracle.jdbc.driver.OracleDriver"
+		url="jdbc:oracle:thin:@212.152.179.117:1521:ora11g"
+		username="d5b17"
+		password="d5b17"
+		maxActive="20"
+		maxIdle="50"
+		maxWait="-1"
+	/>
+	<!-- java:comp/env/jdbc/mytest -->
+	<!--url="jdbc:oracle:thin:@aphrodite3:1521:ora11g"-->
+	<!--url="jdbc:oracle:thin:@212.152.179.117:1521:ora11g"-->
+	<!--url="jdbc:oracle:thin:@192.168.128.151:1521:ora11g" aphrodite3 ip-->
+</Context>

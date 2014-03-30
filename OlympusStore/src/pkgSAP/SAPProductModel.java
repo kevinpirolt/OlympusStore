@@ -1,11 +1,10 @@
 package pkgSAP;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 
 import com.sap.mw.jco.IFunctionTemplate;
 import com.sap.mw.jco.JCO;
-import com.sap.mw.jco.JCO.Client;
-import com.sap.mw.jco.JCO.Connection;
 import com.sap.mw.jco.JCO.Function;
 
 public class SAPProductModel {
@@ -13,12 +12,16 @@ public class SAPProductModel {
 	private JCO.Client mConnection = null;
 	private JCO.Repository mRepository = null;
 	
-	String userName;
-	String password;
-	String ipAddress;
+	String userName = null;
+	String password = null;
+	String ipAddress = null;
 
-	public SAPProductModel() {
-		// TODO Auto-generated constructor stub
+	public SAPProductModel() {}
+	
+	public SAPProductModel(String userName, String password, String ipAddress) {
+		this.userName = userName;
+		this.password = password;
+		this.ipAddress = ipAddress;
 	}
 	
 	public void createConnection() throws Exception {
@@ -37,6 +40,36 @@ public class SAPProductModel {
 		}
 	}
 	
+	public void insertProduct(final String pname, final float price, final int initialQuantity) throws Exception {
+		this.createConnection();
+		JCO.Function insert = this.getFunction("ZBAPI_OLYMPUS_INSERTPRODUCT");
+		JCO.Function commit = this.getCommitFunction();
+		ArrayList<Object> values = this.prepareArrayList(pname, price, initialQuantity);
+		ArrayList<String> names = this.prepareStringArrayList("INSNAME", "INSPRICE", "INSQTY");
+		SAPProductModel.setInsertParameter(insert, values, names);
+		this.executeFunction(insert);
+		this.executeFunction(commit);
+		this.disconnect();
+	}
+	
+	private ArrayList<Object> prepareArrayList(Object... vals) {
+		ArrayList<Object> values = new ArrayList<>();
+		for(Object o : vals)
+			values.add(o);
+		return values;
+	}
+	
+	private ArrayList<String> prepareStringArrayList(String... vals) {
+		ArrayList<String> values = new ArrayList<>();
+		for(String o : vals)
+			values.add(o);
+		return values;
+	}
+
+	private Function getCommitFunction() throws Exception {
+		return this.getFunction("BAPI_TRANSACTION_COMMI");
+	}
+
 	public void insertProduct(String newPMotivation, String newPName,
 			String newPDate, String newDNo) throws Exception {
 		JCO.Function insert = this.getFunction("ZBAPI_DEPARTMENT_INSERTPUPIL");
@@ -48,6 +81,16 @@ public class SAPProductModel {
 		this.executeFunction(commit);
 		System.out.println("X");
 		this.disconnect();
+	}
+	
+	private static void setInsertParameter(JCO.Function fun, ArrayList<Object> values,
+			ArrayList<String> names) throws SAPException {
+		if(values.size() != names.size())
+			throw new SAPException("Count of Function-Parameters and Function-Parameter-Names"
+					+ " are not equal");
+		for(int i = 0; i<values.size(); i++) {
+			fun.getImportParameterList().setValue(values.get(i), names.get(i));
+		}
 	}
 
 	private static void setInsertPupilParameter(Function insert, String newPName,

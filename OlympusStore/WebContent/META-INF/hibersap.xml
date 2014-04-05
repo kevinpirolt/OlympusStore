@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<hibersap xmlns="urn:hibersap:hibersap-configuration:1.0" > 
+  <session-manager name="A12"> 
+    <context>org.hibersap.execution.jco.JCAContext</context> 
+ 
+    <jca-connection-factory>java:/eis/sap/A12</jca-connection-factory> 
+    <jca-connectionspec-factory> 
+      org.hibersap.execution.jca.cci.SapBapiJcaAdapterConnectionSpecFactory 
+    </jca-connectionspec-factory> 
+ 
+    <properties> 
+      <property name="jco.client.client" value="000" /> 
+      <property name="jco.client.user" value="bcuser" /> 
+      <property name="jco.client.passwd" value="minisap" /> 
+      <property name="jco.client.lang" value="en" /> 
+      <property name="jco.client.ashost" value="192.168.193.83" /> 
+      <property name="jco.client.sysnr" value="00" /> 
+    </properties> 
+ 
+    <!-- <annotatedClasses> 
+      <class>org.hibersap.examples.flightlist.FlightListBapi</class> 
+      <class>org.hibersap.examples.flightdetail.FlightDetailBapi</class> 
+    </annotatedClasses> 
+ 
+    <interceptorClasses> 
+      <class>com.mypackage.MyHibersapInterceptor</class> 
+    <interceptorClasses>  -->
+  </session-manager> 
+</hibersap>

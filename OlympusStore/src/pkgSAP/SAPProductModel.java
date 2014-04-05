@@ -2,12 +2,26 @@ package pkgSAP;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+
+import org.hibersap.configuration.AnnotationConfiguration;
+import org.hibersap.session.SessionManager;
+
+import pkgSAPUtil.SAPFunctionPreperator;
+import pkgUtil.Product;
 
 import com.sap.mw.jco.IFunctionTemplate;
 import com.sap.mw.jco.JCO;
 import com.sap.mw.jco.JCO.Function;
+import com.sun.xml.internal.bind.v2.TODO;
 
 public class SAPProductModel {
+	/**
+	 * nach Typ: latest 3
+	 * nach Suchstrig: name
+	 * alle daten von einem
+	 * 
+	 */
 	
 	private JCO.Client mConnection = null;
 	private JCO.Repository mRepository = null;
@@ -16,12 +30,21 @@ public class SAPProductModel {
 	String password = null;
 	String ipAddress = null;
 
-	public SAPProductModel() {}
+	private SAPFunctionPreperator sfp = null;
+	
+	public SAPProductModel() {sfp = new SAPFunctionPreperator();}
 	
 	public SAPProductModel(String userName, String password, String ipAddress) {
 		this.userName = userName;
 		this.password = password;
 		this.ipAddress = ipAddress;
+		sfp = new SAPFunctionPreperator();
+	}
+	
+	private void connect() {
+		AnnotationConfiguration configuration= new AnnotationConfiguration("A12"); 
+		SessionManager sessionManager = configuration.buildSessionManager();
+		
 	}
 	
 	public void createConnection() throws Exception {
@@ -40,37 +63,77 @@ public class SAPProductModel {
 		}
 	}
 	
-	public void insertProduct(final String pname, final float price, final int initialQuantity) throws Exception {
+	public void insertProduct(String pname, float price, int initialQuantity, Date reldate,
+			String interpret, String type, String genre, String description, String img) throws Exception {
 		this.createConnection();
-		JCO.Function insert = this.getFunction("ZBAPI_OLYMPUS_INSERTPRODUCT");
-		JCO.Function commit = this.getCommitFunction();
-		ArrayList<Object> values = this.prepareArrayList(pname, price, initialQuantity);
-		ArrayList<String> names = this.prepareStringArrayList("INSNAME", "INSPRICE", "INSQTY");
-		SAPProductModel.setInsertParameter(insert, values, names);
-		this.executeFunction(insert);
-		this.executeFunction(commit);
+		JCO.Function insert = sfp.getFunction("ZBAPI_OLYMPUS_INSERTPRODUCT", this.mConnection);
+		JCO.Function commit = sfp.getCommitFunction(mConnection);
+		ArrayList<Object> values = sfp.prepareArrayList(pname, price, initialQuantity, reldate,
+				interpret, type, genre, description, img);
+		ArrayList<String> names = sfp.prepareStringArrayList("INSNAME", "INSPRICE", "INSQTY", "INSTRELDATE",
+				"INSTINTERPRET", "INSTYPE", "INSGENRE", "INSDESCRIPTION", "INSIMG");
+		sfp.setInsertParameter(insert, values, names);
+		sfp.executeFunction(insert, mConnection);
+		sfp.executeFunction(commit, mConnection);
 		this.disconnect();
 	}
 	
-	private ArrayList<Object> prepareArrayList(Object... vals) {
-		ArrayList<Object> values = new ArrayList<>();
-		for(Object o : vals)
-			values.add(o);
-		return values;
+	public ArrayList<Product> getAllProducts() throws Exception {
+		ArrayList<Product> products = null;
+		
+		this.createConnection();
+		
+		JCO.Function get = sfp.getFunction("ZBAPI_OLYMPUS_GETPRODUCT", this.mConnection);
+		JCO.Function commit = sfp.getCommitFunction(mConnection);
+		sfp.executeFunction(get, this.mConnection);
+		sfp.executeFunction(commit, this.mConnection);
+		products = sfp.getProducts(get);
+		
+		this.disconnect();
+		return products;
+	}
+
+	public ArrayList<Product> getProductsByName(String name) throws Exception {
+		ArrayList<Product> products = null;
+		
+		this.createConnection();
+		
+		JCO.Function get = sfp.getFunction("ZBAPI_OLYMPUS_GETPRODUCTBYNAME", this.mConnection);
+		JCO.Function commit = sfp.getCommitFunction(mConnection);
+		
+		ArrayList<Object> values = sfp.prepareArrayList(name);
+		ArrayList<String> names = sfp.prepareStringArrayList("INSNAME");
+		sfp.setInsertParameter(get, values, names);
+		
+		sfp.executeFunction(get, this.mConnection);
+		sfp.executeFunction(commit, this.mConnection);
+		products = sfp.getProducts(get);
+		
+		this.disconnect();
+		return products;
 	}
 	
-	private ArrayList<String> prepareStringArrayList(String... vals) {
-		ArrayList<String> values = new ArrayList<>();
-		for(String o : vals)
-			values.add(o);
-		return values;
+	public ArrayList<Product> getLatestProductsPerType(String type) throws Exception {
+		ArrayList<Product> products = null;
+		
+		this.createConnection();
+		
+		JCO.Function get = sfp.getFunction("ZBAPI_OLYMPUS_GETPRODUCTLATEST", this.mConnection);
+		JCO.Function commit = sfp.getCommitFunction(mConnection);
+		
+		ArrayList<Object> values = sfp.prepareArrayList(type);
+		ArrayList<String> names = sfp.prepareStringArrayList("INSTTYPE");
+		sfp.setInsertParameter(get, values, names);
+		
+		sfp.executeFunction(get, this.mConnection);
+		sfp.executeFunction(commit, this.mConnection);
+		products = sfp.getProducts(get);
+		
+		this.disconnect();
+		return products;
 	}
 
-	private Function getCommitFunction() throws Exception {
-		return this.getFunction("BAPI_TRANSACTION_COMMI");
-	}
-
-	public void insertProduct(String newPMotivation, String newPName,
+	/*public void insertProduct(String newPMotivation, String newPName,
 			String newPDate, String newDNo) throws Exception {
 		JCO.Function insert = this.getFunction("ZBAPI_DEPARTMENT_INSERTPUPIL");
 		JCO.Function commit = this.getFunction("BAPI_TRANSACTION_COMMIT");
@@ -81,36 +144,5 @@ public class SAPProductModel {
 		this.executeFunction(commit);
 		System.out.println("X");
 		this.disconnect();
-	}
-	
-	private static void setInsertParameter(JCO.Function fun, ArrayList<Object> values,
-			ArrayList<String> names) throws SAPException {
-		if(values.size() != names.size())
-			throw new SAPException("Count of Function-Parameters and Function-Parameter-Names"
-					+ " are not equal");
-		for(int i = 0; i<values.size(); i++) {
-			fun.getImportParameterList().setValue(values.get(i), names.get(i));
-		}
-	}
-
-	private static void setInsertPupilParameter(Function insert, String newPName,
-			String newPMotivation, String newPDate, String newDNo) {
-		insert.getImportParameterList().setValue(newDNo, "IDNO");
-		insert.getImportParameterList().setValue(newPName, "IPNAME");
-		insert.getImportParameterList().setValue(newPMotivation, "IMOTIV");
-		insert.getImportParameterList().setValue(newPDate, "IPDATE");
-	}
-	
-	private JCO.Function getFunction(String nameOfFunction) throws Exception {
-		mRepository = new JCO.Repository("MyRepository", mConnection);
-		IFunctionTemplate ft = mRepository.getFunctionTemplate(nameOfFunction.toUpperCase());
-		if (ft == null)
-			throw new Exception("function not found in SAP Repository.");
-		return ft.getFunction();
-	}
-	
-	private void executeFunction (JCO.Function _sapFunction) throws Exception {
-		this.mConnection.execute(_sapFunction);
-	}
-
+	}*/
 }

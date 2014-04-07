@@ -84,7 +84,6 @@ public class contentLeft implements Serializable{
 	
 	public void logOut() {
 		
-		System.out.println("asdf");
 		this.setVisibilityform("");
 		this.setVisibilityloggedin("display:none;");
 		

@@ -1,0 +1,119 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head>
+	<title>OlympusStore</title>
+</h:head>
+<h:body>
+
+	<ui:composition template="./templates/BasicTemplate.xhtml">
+		<ui:define name="navbar"></ui:define>
+		<ui:define name="content">
+		
+
+				<blockquote>
+					<h1>Add Products</h1>
+					<footer>welcome home admin!</footer>
+				</blockquote>
+
+				<div class="container">
+	<div class="row">
+      <div class="col-md-6 col-md-offset-3">
+        <div class="well well-sm">
+          <form class="form-horizontal" action="" method="post">
+    
+            <!-- Name input-->
+            <div class="form-group">
+              <label class="col-md-3 control-label" for="name">Name</label>
+              <div class="col-md-9">
+                <input id="name" name="name" type="text" placeholder="Name" class="form-control"/>
+              </div>
+            </div>
+            
+            <!-- Price input-->
+            <div class="form-group">
+              <label class="col-md-3 control-label" for="price">Price</label>
+              <div class="col-md-9">
+                <input id="price" name="price" type="text" placeholder="Price" class="form-control"/>
+              </div>
+            </div>
+            
+            <!-- Interpret/Developer input-->
+            <div class="form-group">
+              <label class="col-md-3 control-label" for="interpret">Interpret/Developer</label>
+              <div class="col-md-9">
+                <input id="interpret" name="interpret" type="text" placeholder="Interpret/Developer" class="form-control"/>
+              </div>
+            </div>
+    
+            <!-- Genre input-->
+            <div class="form-group">
+              <label class="col-md-3 control-label" for="genre">Genre</label>
+              <div class="col-md-9">
+                <input id="genre" name="genre" type="text" placeholder="Genre" class="form-control"/>
+              </div>
+            </div>
+    
+            <!-- Release Date input -->
+            <div class="form-group">
+              <label class="col-md-3 control-label" for="releasedate">Release Date</label>
+              <div class="col-md-9">
+                <input id="releasedate" name="releasedate" type="date" placeholder="Release Date" class="form-control"/>
+              </div>
+            </div>
+            
+            <!-- Description input -->
+            <div class="form-group">
+              <label class="col-md-3 control-label" for="description">Description</label>
+              <div class="col-md-9">
+                <textarea id="description" class="form-control" rows="3"></textarea>
+              </div>
+            </div>
+            
+            <!-- Image-Link input -->
+            <div class="form-group">
+              <label class="col-md-3 control-label" for="imagelink">Image-Link</label>
+              <div class="col-md-9">
+                <input id="imagelink" name="imagelink" type="text" placeholder="Image-Link" class="form-control"/>
+              </div>
+            </div>
+            
+            <!-- Product Type input -->
+            <div class="form-group">
+              <label class="col-md-3 control-label" for="type">Product Type</label>
+              <div class="col-md-9">
+                <select class="form-control">
+   					 <option value="one">CD</option>
+    				 <option value="two">DVD/BluRay</option>
+   					 <option value="three">Game</option>
+				</select>
+              </div>
+            </div>
+    
+            <!-- Form actions -->
+            <div class="form-group">
+              <div class="col-md-12 text-right">
+                <button type="submit" class="btn btn-primary btn-lg">Submit</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+	</div>
+</div>
+
+
+
+		</ui:define>
+
+
+
+
+	</ui:composition>
+
+
+</h:body>
+</html>

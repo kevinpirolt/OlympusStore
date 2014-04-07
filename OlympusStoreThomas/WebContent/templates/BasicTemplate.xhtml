@@ -1,0 +1,79 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+          "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+<head>
+  <title><ui:insert name="title">OlympusStore</ui:insert></title>
+	<link rel="stylesheet" type="text/css" href="./bootstrap/css/bootstrap.css"/>
+</head>
+
+<body>
+	
+<ui:debug hotkey="x" rendered="#{initParam['javax.faces.FACELETS_DEVELOPMENT']}"/>
+
+<div id="header">
+    <ui:insert name="header">
+    	<ui:include src="header.xhtml"/>
+    </ui:insert>
+</div>
+
+
+
+<div class="row">
+
+
+  <div id="navbar">
+   <div class="navbar navbar-default" role="navigation">
+	<div class="container-fluid">
+			
+			
+	<div id="contentLeft" class="col-lg-2" style="padding:30px;">
+	  <ui:insert name="contentLeft">
+	    	<div>
+	    		<ui:include src="contentLeft.xhtml"/>
+	    	</div>
+	  </ui:insert>
+	</div>
+	
+	<div id="contentContainer" class="col-lg-10">
+	
+	<div id="navbar">
+	  <ui:insert name="navbar">
+	    	<div>
+	    		<ui:include src="navbar.xhtml"/>
+	    	</div>
+	  </ui:insert>
+	</div>
+	
+	<div id="content">
+	  <ui:insert name="content">
+	    	<div></div>
+	  </ui:insert>
+	</div>
+	
+	</div>
+	
+	
+      </div>
+     </div>
+			<!-- /.container-fluid -->
+   </div>
+		
+  
+</div>
+
+
+
+<div id="footer">
+  <ui:insert name="footer">
+		<ui:include src="footer.xhtml"/>
+  </ui:insert>
+</div>
+
+	<script src="./jquery/js/jquery.js"></script>
+	<script src="./bootstrap/js/bootstrap.js"></script>
+</body>
+
+</html>

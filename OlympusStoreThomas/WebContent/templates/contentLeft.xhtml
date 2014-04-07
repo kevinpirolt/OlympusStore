@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+<body>
+	
+	<div id="loginform" style="#{contentLeft.visibilityform}">
+
+     <h:form class="form-signin" role="form">
+        <h2 class="form-signin-heading">Login</h2>
+        <span>Name:</span><h:inputText id="name" class="form-control" value="#{contentLeft.name}"/>
+        <span>Password:</span><h:inputSecret id="password" class="form-control" value="#{contentLeft.password}"/>
+        <br/>
+        <h:commandButton class="btn btn-lg btn-primary btn-block" value="Login" action="#{contentLeft.checkLogin()}"/>
+        <br/><span>Not registered yet?</span> <br/> <a href="./signin.jsf"><span>Sign In</span></a>
+      </h:form>
+		
+		
+	</div>
+	
+	<div id="loggedin" style="#{contentLeft.visibilityloggedin}">
+
+     <h:form>
+      <h3>Logged In</h3>
+      <img src="http://www.biography.com/imported/images/Biography/Images/Profiles/W/Kanye-West-362922-1-402.jpg" style="width:150px; height:160px;"/>
+	  <span>Kanye West</span><br/>
+	  <h:commandButton class="btn btn-lg btn-primary btn-block" value="Logout" action="#{contentLeft.logOut()}"/>
+	 </h:form>
+		
+	</div>
+	
+	<hr style="border-top: 1px solid grey;"/>
+	
+	<div>
+	
+	<form class="form-signin" role="form" action="./checkout.jsf">
+        <h2 class="form-signin-heading">Cart</h2>
+        <span>#{contentLeft.productsInCart} Products in cart.</span>
+        <br/>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Check Out</button>
+      </form>
+	
+	</div>
+</body>
+</html>

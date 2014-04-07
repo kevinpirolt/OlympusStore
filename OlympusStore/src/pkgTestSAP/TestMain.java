@@ -9,7 +9,7 @@ public class TestMain {
 	public TestMain() {}
 
 	public static void main(String[] args) {
-		SAPProductModel spm = new SAPProductModel("BCUSER","MINISAP","192.168.16.18");
+		SAPProductModel spm = new SAPProductModel("BCUSER","MINISAP","10.0.0.8");
 		try {
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
 			

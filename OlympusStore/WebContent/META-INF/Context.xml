@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context>
+<Resource name="jdbc/resStore"
+auth="Container"
+type="javax.sql.DataSource"
+driverClassName="oracle.jdbc.OracleDriver"
+url="jdbc:oracle:thin:@192.168.128.151:1521:ora11g"
+username="d5b24"
+password="d5b24"
+maxActive="20"
+maxIdle="30"
+maxWait="-1" />
+</Context>

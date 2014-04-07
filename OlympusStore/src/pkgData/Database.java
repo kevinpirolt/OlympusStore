@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Vector;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -89,16 +88,19 @@ public class Database implements Serializable
 		return ret;
 	}
 
-	public void createUser(String username, String adress,String pw, String birthdate ) throws SQLException
+	public void createUser(String username, String adress, String url,String birthdate,String email,String pw ) throws SQLException
 	{
 		this.Connect();
-		PreparedStatement stmt=conn.prepareStatement("insert into users values(?,?,?,?,?)");
+		PreparedStatement stmt=conn.prepareStatement("insert into users values(seq_users.NEXTVAL,?,?,?,?,?,?,?)");
 
 		stmt.setString(1, username);
-		stmt.setString(2, username);
-		stmt.setString(3, pw);
+		stmt.setString(2, adress);
+		stmt.setString(3, url);
 		stmt.setString(4, birthdate);
-		stmt.setInt(5, 	0);
+		stmt.setString(5, email);
+		stmt.setString(6, pw);
+		stmt.setInt(7, 	0);
+	
 
 		stmt.executeUpdate();
 	}
